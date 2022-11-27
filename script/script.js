@@ -1,5 +1,5 @@
 const repoList = document.querySelector(".js-repo-list");
-
+const spinner = document.querySelector("#spinner");
 
 fetch("https://api.github.com/users/Neschadin/repos")
   .then(getStatus)
@@ -15,9 +15,15 @@ function getStatus(response) {
 
 
 function getCommitDate(repoName) {
+  spinner.removeAttribute('hidden');
   fetch(`https://api.github.com/repos/Neschadin/${repoName}/commits`)
     .then(getStatus)
-    .then(response => alert("last commit: " + response[0].commit.author.date))
+    .then(response => {
+      spinner.setAttribute("hidden", "");
+      setTimeout(() => {
+        alert("last commit: " + response[0].commit.author.date);
+      }, 100);
+    })
     .catch(alert);
 }
 
@@ -28,7 +34,7 @@ function buildRepoList(response) {
 
     repoList.append(elem);
   });
-  
+
   repoList.addEventListener("click", (e) => {
     if (e.target.className === "js-list-item") getCommitDate(e.target.innerText);
   });
