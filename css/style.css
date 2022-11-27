@@ -1,0 +1,29 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  font-family: 'Trebuchet MS';
+  background: #202020;
+  color: #ADBAC7;
+}
+
+.container {
+  width: 280px;
+}
+
+img,
+.container {
+  display: block;
+  margin: 40px auto;
+}
+
+ul {
+  list-style: inside;
+  cursor: pointer;
+}
