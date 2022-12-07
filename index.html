@@ -3,34 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather</title>
+    <link rel="stylesheet" type="text/css" href="https://github.com/necolas/normalize.css/blob/master/normalize.css">
+    <script src="https://kit.fontawesome.com/24fd0d6685.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1 class="container">My GitHub Profile</h1>
-    </header>
+    <video autoplay muted loop>
+        <source src="./media/video.mp4" type="video/mp4">
+    </video>
 
-    <main>
-        <picture>
-            <source
-                srcset="https://github-readme-stats.vercel.app/api?username=Neschadin&count_private=true&show_icons=true&theme=transparent" />
-            <img src="https://github-readme-stats.vercel.app/api?username=Neschadin&show_icons=true" />
-        </picture>
+    <main class="main">
 
-        <h2 class="container">My repos:</h2>
+        <div class='box'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class="weathercon"></div>
+            <div class="info">
+                <h2 class="location"></h2>
+                <p class="date"></p>
+                <h1 class="temp"></h1>
+            </div>
+        </div>
 
-        <ul class="js-repo-list container">
-        </ul>
+        <form class="form">
+            <div class="search">
+                <input type="search" placeholder="Введіть назву, або координати міста">
+                <button>
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
 
-        <img src="./img/snake.svg" alt="Typing SVG" />
     </main>
-
-    <div hidden id="spinner"></div>
 
 </body>
 

@@ -1,10 +1,24 @@
-const repoList = document.querySelector(".js-repo-list");
-const spinner = document.querySelector("#spinner");
+const elemWeathercon = document.querySelector(".weathercon");
+const elemLocation = document.querySelector(".location");
+const elemDate = document.querySelector(".date");
+const elemTemp = document.querySelector(".temp");
+const elemForm = document.querySelector(".form");
 
-fetch("https://api.github.com/users/Neschadin/repos")
-  .then(getStatus)
-  .then(buildRepoList)
-  .catch(alert);
+const options = {
+  method: "GET",
+  headers: {
+    "X-RapidAPI-Key": "f2902223d3mshf989ffd7ea8cccap190956jsn0dca5fd07b43",
+    "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com",
+  },
+};
+
+elemForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (e.target[0].value) {
+    getData(e.target[0].value);
+    elemForm.reset();
+  }
+});
 
 
 function getStatus(response) {
@@ -14,38 +28,31 @@ function getStatus(response) {
 }
 
 
-function getCommitDate(repoName) {
-  spinner.removeAttribute('hidden');
-  fetch(`https://api.github.com/repos/Neschadin/${repoName}/commits`)
+function getData(queryParameter) {
+  fetch(`https://weatherapi-com.p.rapidapi.com/current.json?q=${queryParameter}`, options)
     .then(getStatus)
-    .then(response => {
-      spinner.setAttribute("hidden", "");
-      setTimeout(() => {
-        alert("last commit: " + response[0].commit.author.date);
-      }, 100);
-    })
-    .catch(alert);
+    .then(showWeatherData)
+    .catch(err => {
+      console.error(err);
+      showWeatherData();
+    });
+
 }
 
 
-function buildRepoList(response) {
-  response.forEach((item) => {
-    const elem = createHTMLElement(item);
+function showWeatherData(data) {
+  elemWeathercon.innerHTML = data ? `<img src="${data.current.condition.icon}">` : "";
+  elemLocation.innerText = data ? data.location.name : "лажа...  :(";
+  elemDate.innerText = data ? data.location.localtime : "";
+  elemTemp.innerText = data ? `${data.current.feelslike_c} °C` : "";
+}
 
-    repoList.append(elem);
+
+// start
+fetch("https://ipapi.co/json/")
+  .then(getStatus)
+  .then((r) => getData(r.ip))
+  .catch((err) => {
+    console.error(err);
+    showWeatherData();
   });
-
-  repoList.addEventListener("click", (e) => {
-    if (e.target.className === "js-list-item") getCommitDate(e.target.innerText);
-  });
-}
-
-
-function createHTMLElement(item) {
-  const elem = document.createElement("li");
-
-  elem.className = "js-list-item";
-  elem.innerText = item.name;
-
-  return elem;
-}
