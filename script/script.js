@@ -28,18 +28,14 @@ const showWeatherData = (data) => {
 };
 
 
-const catchError = (error) => {
-  showWeatherData();
-  console.error(error);
-};
-
-
 const sendHTTPRequest = async (url, options) => {
   try {
     const response = await fetch(url, options);
     if (response.status === 200) return await response.json();
+    throw new Error(response.status);
   } catch (error) {
-    catchError(error);
+    showWeatherData();
+    console.error(error);
   }
 };
 
@@ -47,11 +43,11 @@ const sendHTTPRequest = async (url, options) => {
 function getWeatherData(queryParameter) {
   sendHTTPRequest(`https://weatherapi-com.p.rapidapi.com/current.json?q=${queryParameter}`, apiKey)
     .then(showWeatherData)
-    .catch(catchError);
+    .catch(console.error);
 }
 
 
 // start
 sendHTTPRequest("https://ipapi.co/json/")
   .then((r) => getWeatherData(r.ip))
-  .catch(catchError);
+  .catch(console.error);
